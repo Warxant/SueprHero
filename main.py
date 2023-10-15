@@ -1,20 +1,17 @@
 from pip._vendor import requests
 import json
-from pprint import pprint
 def get_the_smartest_superhero() -> str:
-    hero_int = {'Hulk' : 0, 'Captain America' : 0, 'Thanos' : 0}
-    heroes_list = ['Hulk', 'Captain america', 'Thanos']
+    hero_int = {}
+    heroes_list = ['Thanos', 'Hulk', 'Captain America',]
     intelligence_hero = ()
     url = 'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/all.json'
-    response = requests.get(url)
-    bod = json.loads(response.content)
-    for s in heroes_list:
-        for i in s:
-            if i in bod:
-                intelligence_hero = bod[i]['powerstats']['intelligence']
-                hero_int[i] = intelligence_hero        
+    all_heroes = requests.get(url).json()
+    for hero in all_heroes:
+        if hero['name'] in heroes_list:
+            intelligence_hero = int(hero['powerstats']['intelligence'])
+            hero_int[hero['name']] = intelligence_hero
+    the_smartest_superhero = list(hero_int.keys())
+    return print(the_smartest_superhero[-1])
     
-    
-    return print(hero_int)
 
 get_the_smartest_superhero()
